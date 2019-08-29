@@ -14,39 +14,68 @@ class LinearRegression:
     def predict(self, x):
         '''
         Predict an array of output from an array of input data using hypothesis function 
-        parameter:
-        x : array of data -> 2 Dimensional Numpy array
+        
+        Parameters:
+        x : array of data -> numpy array with shape = (n * m)
 
         Return :
-        array of predicted output -> 1 Dimensional Numpy array
+        array of predicted output -> numpy array with shape = (n)
         '''
         # Check if x have a same number of features with weight
         if len(x[0]) != self.total_features:
             raise Exception("Number of features in x is not equal with total feature in weight!")
         
         # Return the output
-        return (self.weight.T @ x)
+        return (x @ self.weight[np.newaxis, :].T)
 
     def cost(self, x, y):
         '''
         calculate the error rate of the current weight compared with x and y
         the error rate is calculated by using squared error function (the most common cost function for linear regression)
-        parameter:
-        x : array of data -> 2 Dimensional Numpy array
-        y : array of ouput -> 2 Dimensional Numpy array
+        
+        Parameters:
+        x : array of data -> numpy array with shape = (n * m)
+        y : array of output -> numpy array with shape = (n * m)
 
         Return :
-        error rate of the current weight -> Float
+        error rate of the current weight -> float
         '''
         difference = self.predict(x) - y
         squared_error = difference.T @ difference
         return (squared_error/(2 * len(y)))
 
     def gradient_descent(self, x, y, learning_rate=self.learning_rate, batch_size=self.batch_size, total_epochs=self.total_epochs):
+        '''
+        apply gradient descent to reduced the error rate of the current weight
+        by using derivative of the cost function
+        
+        Parameters:
+        x : array of data -> numpy array with shape = (n * m)
+        y : array of output -> numpy array with shape = (n * m)
+        learning_rate : learning rate of the gradient descent -> float
+        batch_size : size of each batch -> int
+        total_epoch : total x and y being fully iterated -> int
+        '''
         for epoch in total_epochs:
-            for batch in batch_size:
-                pass
-        pass
+            # initial the start batch to 0
+            start_batch = 0 
+            end_batch = batch_size
+            while start_batch < len(x):
+                # if the end_batch is more than the length of x 
+                if end_batch >= len(x):
+                    end_batch = len(x)
+
+                # Divide the train data into smaller batch
+                current_x = x[start_batch:end_batch]
+                current_y = y[start_batch:end_batch]
+                
+                # Calclate the derivative
+                derivative = np.multiply((self.predict(current_x) - y), current_x)
+                self.weight -= learning_rate * np.sum(derivative, axis=0)
+
+                # Move to next batch
+                start_batch += batch_size
+                end_batch += batch_size
     
     def normal_equation(self,):
         pass
