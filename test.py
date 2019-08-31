@@ -2,6 +2,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import random
+import LinearRegression as lr
 
 def generate_data(total_features, slope, randomness, range_y):
     '''
@@ -22,9 +23,21 @@ def generate_data(total_features, slope, randomness, range_y):
 
     return (random_data[:,0 : total_features], y)
 
-
+linear_regression = lr.LinearRegression(2)
 x, y = generate_data(2, [-0.5, 0.2], [0.3, 1], (0, 10, 0.1))
 
+linear_regression.batch_size = 25
+linear_regression.total_epochs = 4
+print(linear_regression.cost(x, y))
+linear_regression.gradient_descent(x, y)
+print(linear_regression.cost(x, y))
+linear_regression.gradient_descent(x, y)
+print(linear_regression.cost(x, y))
+linear_regression.gradient_descent(x, y)
+print(linear_regression.cost(x, y))
+linear_regression.gradient_descent(x, y)
+print(linear_regression.cost(x, y))
+'''
 # can only visualize the first 2 feature from
 # Initialize the 3D scatterplot
 fig = plt.figure()
@@ -40,3 +53,4 @@ ax.set_zlabel('Output')
 
 # Show the 3D scatterplot
 plt.show()
+'''

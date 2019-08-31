@@ -26,7 +26,7 @@ class LinearRegression:
             raise Exception("Number of features in x is not equal with total feature in weight!")
         
         # Return the output
-        return (x @ self.weight[np.newaxis, :].T)
+        return (x @ self.weight[np.newaxis, :].T)[:,0]
 
     def cost(self, x, y):
         '''
@@ -65,7 +65,7 @@ class LinearRegression:
         if total_epochs == None:
             total_epochs = self.total_epochs
 
-        for epoch in total_epochs:
+        for epoch in range(total_epochs):
             # initial the start batch to 0
             start_batch = 0 
             end_batch = batch_size
@@ -78,8 +78,8 @@ class LinearRegression:
                 current_x = x[start_batch:end_batch]
                 current_y = y[start_batch:end_batch]
                 
-                # Calclate the derivative
-                derivative = np.multiply((self.predict(current_x) - current_y), current_x)
+                # Calculate the derivative
+                derivative = np.multiply((self.predict(current_x) - current_y)[:,np.newaxis], current_x)
                 self.weight -= (learning_rate / len(current_y)) * np.sum(derivative, axis=0)
 
                 # Move to next batch
