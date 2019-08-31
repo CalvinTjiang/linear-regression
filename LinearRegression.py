@@ -44,7 +44,7 @@ class LinearRegression:
         squared_error = difference.T @ difference
         return (squared_error/(2 * len(y)))
 
-    def gradient_descent(self, x, y, learning_rate=self.learning_rate, batch_size=self.batch_size, total_epochs=self.total_epochs):
+    def gradient_descent(self, x, y, learning_rate=None, batch_size=None, total_epochs=None):
         '''
         apply gradient descent to reduced the error rate of the current weight
         by using derivative of the cost function
@@ -52,10 +52,19 @@ class LinearRegression:
         Parameters:
         x : array of data -> numpy array with shape = (n * m)
         y : array of output -> numpy array with shape = (n * m)
-        learning_rate : learning rate of the gradient descent -> float
-        batch_size : size of each batch -> int
-        total_epoch : total x and y being fully iterated -> int
+        learning_rate : learning rate of the gradient descent -> positive float
+        batch_size : size of each batch -> positive int
+        total_epoch : total x and y being fully iterated -> positive int
         '''
+        if learning_rate == None:
+            learning_rate = self.learning_rate
+        
+        if batch_size == None:
+            batch_size = self.batch_size
+        
+        if total_epochs == None:
+            total_epochs = self.total_epochs
+
         for epoch in total_epochs:
             # initial the start batch to 0
             start_batch = 0 
@@ -70,8 +79,8 @@ class LinearRegression:
                 current_y = y[start_batch:end_batch]
                 
                 # Calclate the derivative
-                derivative = np.multiply((self.predict(current_x) - y), current_x)
-                self.weight -= learning_rate * np.sum(derivative, axis=0)
+                derivative = np.multiply((self.predict(current_x) - current_y), current_x)
+                self.weight -= (learning_rate / len(current_y)) * np.sum(derivative, axis=0)
 
                 # Move to next batch
                 start_batch += batch_size
