@@ -38,28 +38,6 @@ print(linear_regression.cost(x, y))
 linear_regression.gradient_descent(x, y)
 print(linear_regression.cost(x, y))
 
-# X = x[:,0]
-# Y = x[:,1]
-# print(X)
-# print(Y)
-# X, Y = np.meshgrid(X, Y)
-# print(X.shape)
-# print(Y.shape)
-
-# X = np.arange(-5, 5, 0.25)
-# Y = np.arange(-3, 3, 0.25)
-# print(X.shape)
-# print(Y.shape)
-# X, Y = np.meshgrid(X, Y)
-# print(X.shape)
-# print(Y.shape)
-# R = np.sqrt(X**2 + Y**2)
-# print(R.shape)
-# Z = np.sin(R)
-# print(R.shape)
-# # can only visualize the first 2 feature from
-# # Initialize the 3D scatterplot
-
 prediction = linear_regression.predict(x)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
