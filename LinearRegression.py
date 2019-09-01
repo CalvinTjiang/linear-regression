@@ -55,6 +55,9 @@ class LinearRegression:
         learning_rate : learning rate of the gradient descent -> positive float
         batch_size : size of each batch -> positive int
         total_epoch : total x and y being fully iterated -> positive int
+
+        Return:
+        None
         '''
         if learning_rate == None:
             learning_rate = self.learning_rate
@@ -86,5 +89,16 @@ class LinearRegression:
                 start_batch += batch_size
                 end_batch += batch_size
     
-    def normal_equation(self,):
-        pass
+    def normal_equation(self, x, y):
+        '''
+        calculate the weight/parameter with lowest cost 
+        by using Ordinary Least Squares (OLS) equation
+        
+        Parameters:
+        x : array of data -> numpy array with shape = (n * m)
+        y : array of output -> numpy array with shape = (n * m)
+
+        Return:
+        None
+        '''
+        self.weight = (np.linalg.pinv(x.T @ x) @ x.T) @ y
