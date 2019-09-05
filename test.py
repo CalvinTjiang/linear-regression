@@ -19,21 +19,22 @@ def generate_data(total_features, slope, randomness, range_y):
     random_data = np.random.rand(len(y), total_features)
 
     # Update each feature with slope and randomness
-    for i in range(total_features):
-        random_data[:,i] += (y * slope[i]) + np.random.uniform(-randomness[i], randomness[i], (len(y)))
+    random_data[:,0] = np.ones(len(y))
+    for i in range(0, total_features - 1):
+        random_data[:,i + 1] += (y * slope[i]) + np.random.uniform(-randomness[i], randomness[i], (len(y)))
 
     return (random_data[:,0 : total_features], y)
 
 # Generate random data
-x, y = generate_data(2, [-0.5, 0.2], [0.3, 1], (0, 10, 0.1))
+x, y = generate_data(3, [-0.5, 0.2], [0.3, 1], (0, 10, 0.1))
 
 # First model use gradient descent
-linear_regression = lr.LinearRegression(2)
+linear_regression = lr.LinearRegression(3)
 linear_regression.batch_size = 25
 linear_regression.total_epochs = 40
 
 # Second model use normal equation
-linear_regression_1 = lr.LinearRegression(2)
+linear_regression_1 = lr.LinearRegression(3)
 linear_regression_1.weight = np.copy(linear_regression.weight)
 
 print(f'---Gradient Descent---')
@@ -71,9 +72,9 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 # Draw the point
-ax.scatter(x[:,0], x[:,1], y)
-ax.scatter(x[:,0], x[:,1], prediction, marker='^')
-ax.scatter(x[:,0], x[:,1], prediction_1, marker='*')
+ax.scatter(x[:,1], x[:,2], y)
+ax.scatter(x[:,1], x[:,2], prediction, marker='^')
+ax.scatter(x[:,1], x[:,2], prediction_1, marker='*')
 
 # Add the label
 ax.set_xlabel('Feature 1')
