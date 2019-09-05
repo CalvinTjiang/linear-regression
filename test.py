@@ -3,6 +3,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import random
 import LinearRegression as lr
+import timeit
 
 def generate_data(total_features, slope, randomness, range_y):
     '''
@@ -23,29 +24,45 @@ def generate_data(total_features, slope, randomness, range_y):
 
     return (random_data[:,0 : total_features], y)
 
-# Genereta random data
+# Generate random data
 x, y = generate_data(2, [-0.5, 0.2], [0.3, 1], (0, 10, 0.1))
 
 # First model use gradient descent
 linear_regression = lr.LinearRegression(2)
-
 linear_regression.batch_size = 25
 linear_regression.total_epochs = 40
-print(linear_regression.cost(x, y))
-linear_regression.gradient_descent(x, y)
-linear_regression.gradient_descent(x, y)
-print(linear_regression.cost(x, y))
-
-prediction = linear_regression.predict(x)
 
 # Second model use normal equation
 linear_regression_1 = lr.LinearRegression(2)
 linear_regression_1.weight = np.copy(linear_regression.weight)
 
-print(linear_regression_1.cost(x, y))
-linear_regression_1.normal_equation(x, y)
-print(linear_regression_1.cost(x, y))
+print(f'---Gradient Descent---')
+print(f'Initial cost : {linear_regression.cost(x, y)}')
 
+# Start gradient Descent on first model
+start = timeit.default_timer()
+linear_regression.gradient_descent(x, y)
+linear_regression.gradient_descent(x, y)
+taken = (timeit.default_timer() - start)
+
+print(f'Time Taken : {taken}')
+print(f'Result Cost : {linear_regression.cost(x, y)} \n')
+
+
+print(f'---Normal Equation---')
+print(f'Initial cost : {linear_regression_1.cost(x, y)}')
+
+# Start Normal equation on second model
+start = timeit.default_timer()
+linear_regression_1.normal_equation(x, y)
+taken = (timeit.default_timer() - start)
+
+print(f'Time Taken : {taken}')
+print(f'Result Cost : {linear_regression_1.cost(x, y)}')
+
+
+# Predict the output
+prediction = linear_regression.predict(x)
 prediction_1 = linear_regression_1.predict(x)
 
 

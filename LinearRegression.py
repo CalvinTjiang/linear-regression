@@ -82,8 +82,8 @@ class LinearRegression:
                 current_y = y[start_batch:end_batch]
                 
                 # Calculate the derivative
-                derivative = np.multiply((self.predict(current_x) - current_y)[:,np.newaxis], current_x)
-                self.weight -= (learning_rate / len(current_y)) * np.sum(derivative, axis=0)
+                derivative = (self.predict(current_x) - current_y) @ current_x
+                self.weight -= (learning_rate / len(current_y)) * derivative
 
                 # Move to next batch
                 start_batch += batch_size
